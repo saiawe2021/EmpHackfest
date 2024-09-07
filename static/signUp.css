@@ -57,6 +57,36 @@ input[type="password"]::placeholder {
     color: #8695a1;
 }
 
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #ffffff;
+    color: #161c00;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder {
+    color: #8695a1;
+}
+
+input[type="text"],
+input[type="textArea"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #ffffff;
+    color: #161c00;
+}
+
+input[type="text"]::placeholder,
+input[type="textArea"]::placeholder {
+    color: #8695a1;
+}
+
 button {
     width: 100%;
     padding: 15px;
