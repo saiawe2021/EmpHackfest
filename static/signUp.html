@@ -4,17 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
+    <link rel="stylesheet" href="signUp.css">
 </head>
 <body>
-    <h1>Sign Up</h1>
-    <label id="userName">Username</label>
-    <input id="userNameField"></input><br><br>
-    <label id="password">Password</label>
-    <input id="passwordField"></input><br><br>
-    <label id="education">Education</label>
-    <input id="educationField"></input><br><br>
-    <label id="physical">Physical</label>
-    <input id="physicalField"></input><br><br>
-
+    <div class="container">
+        <h1>Sign Up</h1>
+        <form>
+            <div class="form-group">
+                <label for="userNameField">Username</label>
+                <input type="text" id="userNameField" placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label for="passwordField">Password</label>
+                <input type="password" id="passwordField" placeholder="Enter your password">
+            </div>
+            <div class="form-group">
+                <label for="countryField">Home Country</label>
+                <input type="text" id="countryField" placeholder="Enter your home country">
+            </div>
+            <div class="form-group">
+                <label for="physicalField">Physical Statistics and Achievements</label>
+                <input type="text" id="physicalField" placeholder="Describe your physical condition and achievements">
+            </div>
+            <div class="form-group">
+                <label for="personalityField">Personality</label>
+                <input type="text" id="personalityField" placeholder="Describe your personality and experiences">
+            </div>
+            <div class="form-group">
+                <label for="educationField">Education and Academic Achievements</label>
+                <input type="text" id="educationField" placeholder="Describe your education and achievements">
+            </div>
+            <div class="form-group">
+                <label for="workField">Work Experience</label>
+                <input type="text" id="workField" placeholder="Describe your work experience">
+            </div>
+            <div class="form-group">
+                <label for="challengeField">Challenges and Adaptation</label>
+                <input type="text" id="challengeField" placeholder="Describe a challenge you've overcome">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Sign Up">
+            </div>
+        </form>
+    </div>
 </body>
 </html>
