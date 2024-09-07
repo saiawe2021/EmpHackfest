@@ -6,12 +6,22 @@ let jsonParser = bodyParser.json()
 
 const OpenAI = require("openai");
 const openai = new OpenAI({
-  apiKey: "#"
+  apiKey: ""
 });
 
-async function runOrganize(activityNames) {
+var survey_input = {
+  "homeCountry" : "USA",
+  "fitness" : "I have no fitness. I am obese",
+  "personality" : "I play League of Legends",
+  "education" : "I dropped out of middle school for blowing up a classroom",
+  "work_experience" : "I am unemployed and live off the government",
+  "adaptation" : "All my life challenges have defeated me"
+}
+
+async function runOrganize(survey_input) {
     // For text-and-image input (multimodal), use the gemini-pro-vision model
-    var input = ""
+
+    var input = "Create an action plan with 10 steps in the form of a json file that helps a person become an astronaut. Each action in the json must contain a four words or less summary, an integer time frame in months, and a paragraph long specific description that contains necessary resources and specific requirements like academic degrees, fitness benchmarks, or flight experience. Each task is specific, realistic, and personalized. The action plan must contain every uncompleted necessary step to become an astronaut in their home country of " + survey_input["homeCountry"] + ". Make the action plan suited to a specific person. This person has answered the following questions with a response: Question: Describe your current physical statistics and any relevant achievements or certifications. How do you maintain your physical condition? Answer: " + survey_input["fitness"] + " Question: Describe your personality. What were some of your experiences with managing stress, working in groups, and being in a leadership position? Answer: " + survey_input["personality"] + " Question: Describe your education and academic achievements. How has your coursework prepared you for technical and scientific challenges? Answer: " + survey_input["education"] + " Describe your work experience. How has your experience and expertise guided you in professional environments? Answer: " + survey_input["work_experience"] + " Question: Describe a time where you faced and overcame or adapted to a challenge. How has that experience affected you? Answer: " + survey_input["adaptation"]
     console.log(input);
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
@@ -22,7 +32,7 @@ async function runOrganize(activityNames) {
         },
       ],
       temperature: 0,
-      max_tokens: 500,
+      max_tokens: 1434,
       top_p: 1.0,
       frequency_penalty: 0.0,
       presence_penalty: 0.0,
@@ -31,6 +41,8 @@ async function runOrganize(activityNames) {
     console.log(surveryresponse);
     return surveryresponse;
   }
+
+runOrganize(survey_input);
 
 
 app.use(express.static(path.join(__dirname, 'Static')));
