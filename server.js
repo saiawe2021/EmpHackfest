@@ -10,12 +10,12 @@ const openai = new OpenAI({
 });
 
 var survey_input = {
-  "homeCountry" : "USA",
-  "fitness" : "I have no fitness. I am obese",
-  "personality" : "I play League of Legends",
-  "education" : "I dropped out of middle school for blowing up a classroom",
-  "work_experience" : "I am unemployed and live off the government",
-  "adaptation" : "All my life challenges have defeated me"
+  "homeCountry" : "",
+  "fitness" : "",
+  "personality" : "",
+  "education" : "",
+  "work_experience" : "",
+  "adaptation" : ""
 }
 
 async function runOrganize(survey_input) {
@@ -71,8 +71,6 @@ async function chatbotNextMessage(conversation_summary, last_input) {
   return surveryresponse;
 }
 
-runOrganize(survey_input);
-
 
 app.use(express.static(path.join(__dirname, 'Static')));
 
@@ -80,19 +78,37 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, 'Static', 'Homepage.html'));
 });
 
-app.get("/", (req, res) => {
+app.get("/signUp", (req, res) => {
   res.sendFile(path.join(__dirname, 'Static', 'signUp.html'));
 });
 
+app.get("/chatBot", (req, res) => {
+  res.sendFile(path.join(__dirname, 'Static', 'chatbot.html'));
+});
+
+app.use(express.json());
 app.post("/survey-answers", (req, res) => {
-  console.log(req)
-  survey_input.homeCountry = req.homeCountry;
-  survey_input.fitness = req.fitness;
-  survey_input.personality = req.personality;
-  survey_input.education = req.education;
-  survey_input.work_experience = req.fitness;
-  survey_input.adaptation = req.adaptation;
+  survey_input.homeCountry = req.body.homeCountry;
+  survey_input.fitness = req.body.fitness;
+  survey_input.personality = req.body.personality;
+  survey_input.education = req.body.education;
+  survey_input.work_experience = req.body.fitness;
+  survey_input.adaptation = req.body.adaptation;
+  console.log(survey_input);
 })
+
+
+
+app.post("/post/AIcall", (req, res) => {
+  userInformation.Feeling = req.body.Feeling;
+  const secondFunction = async () => {  
+    const result = await runOrganize(survey_input);
+    res.json(result);
+    res.send();
+    return result;
+  } 
+  secondFunction();
+});
 
 
 app.listen(3000, () => console.log('Example app is listening on port 3000.'));
