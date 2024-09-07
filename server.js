@@ -51,15 +51,18 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, 'Static', 'Homepage.html'));
 });
 
-app.post("/survey-answers", (req, res) => {
-  console.log(req);
-  survey_input.homeCountry = req.homeCountry;
-  survey_input.fitness = req.fitness;
-  survey_input.personality = req.personality;
-  survey_input.education = req.education;
-  survey_input.work_experience = req.fitness;
-  survey_input.adaptation = req.adaptation;
-})
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, 'Static', 'signUp.html'));
+});
+
+// app.post("/survey-answers", (req, res) => {
+//   survey_input.homeCountry = req.homeCountry;
+//   survey_input.fitness = req.fitness;
+//   survey_input.personality = req.personality;
+//   survey_input.education = req.education;
+//   survey_input.work_experience = req.fitness;
+//   survey_input.adaptation = req.adaptation;
+// })
 
 
 app.listen(3000, () => console.log('Example app is listening on port 3000.'));
