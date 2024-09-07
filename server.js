@@ -1,14 +1,44 @@
-// Load the http module to create an HTTP server.
-const http = require('http');
+const express = require('express');
+const path = require('path');
+const app = express();
+var bodyParser = require('body-parser')
+let jsonParser = bodyParser.json()
 
-// Configure the HTTP server to respond with "Hello, World!" to all requests.
-const server = http.createServer((req, res) => {
-  res.statusCode = 200; // HTTP status code for "OK"
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello, World!\n');
+const OpenAI = require("openai");
+const openai = new OpenAI({
+  apiKey: "#"
 });
-// The server listens on port 3000.
-const port = 3000;
-server.listen(port, () => {
-  console.log(`Server running at http://localhost:${3000}/`);
+
+async function runOrganize(activityNames) {
+    // For text-and-image input (multimodal), use the gemini-pro-vision model
+    var input = ""
+    console.log(input);
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "user",
+          content: input,
+        },
+      ],
+      temperature: 0,
+      max_tokens: 500,
+      top_p: 1.0,
+      frequency_penalty: 0.0,
+      presence_penalty: 0.0,
+    });
+    surveryresponse = completion.choices[0].message.content;
+    console.log(surveryresponse);
+    return surveryresponse;
+  }
+
+
+app.use(express.static(path.join(__dirname, 'Static')));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, 'Static', 'Homepage.html'));
 });
+
+
+
+app.listen(3000, () => console.log('Example app is listening on port 3000.'));
