@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="login.js"></script>
+    <title>Login</title>
     <link rel="stylesheet" href="login.css">
+    <script src="login.js" defer></script>
 </head>
 <body>
-    <div id="loginScreen">
+    <div class="container">
         <h1>Login</h1>
-        <label id="userName">Username</label>
-        <input id="userNameField"></input><br><br>
-        <label id="password">Password</label>
-        <input id="passwordField"></input><br><br>
-        <input type="submit" value="Login" id="submitButton" ></input>
-        <input type="submit" value="Sign Up" id="signUpButton"></input>
+        <div class="form-group">
+            <label for="userNameField">Username</label>
+            <input type="text" id="userNameField" placeholder="Enter your username">
+        </div>
+        <div class="form-group">
+            <label for="passwordField">Password</label>
+            <input type="password" id="passwordField" placeholder="Enter your password">
+        </div>
+        <div class="form-actions">
+            <button id="loginButton"><a href="">Login</a></button>
+            <a href="signUp.html" id="signUpButton">Dont have a account Sign Up</a>
+        </div>
     </div>
-
 </body>
 </html>
