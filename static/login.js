@@ -1,5 +1,7 @@
-let username = document.getElementById("userNameField");
-let password = document.getElementById("passwordField");
-username.addEventListener("click", function(){
+
+document.getElementById("submitbutton").addEventListener("submit", function(){
     alert("Login successful")
+})
+document.getElementById("signUpButton").addEventListener("submit", function(){
+    window.href(`survey.html`)
 })
