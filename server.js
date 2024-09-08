@@ -100,15 +100,24 @@ app.post("/survey-answers", (req, res) => {
 
 
 app.post("/post/AIcall", (req, res) => {
-  userInformation.Feeling = req.body.Feeling;
   const secondFunction = async () => {  
     const result = await runOrganize(survey_input);
     res.json(result);
     res.send();
+    console.log(result);
     return result;
   } 
   secondFunction();
 });
+
+var username;
+var password;
+app.use(express.json());
+app.post("/post/LoginCred", (req, res)=> {
+  username = req.body.username;
+  password = req.body.password;
+  console.log(username + " " +  password);
+})
 
 
 app.listen(3000, () => console.log('Example app is listening on port 3000.'));
