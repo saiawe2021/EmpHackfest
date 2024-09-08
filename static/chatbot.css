@@ -1,4 +1,3 @@
-/* General Styling */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f0f4f8;
@@ -178,6 +177,7 @@ img {
     align-items: flex-start;
 }
 
+/* Align received messages (from chatbot) to the left */
 .received-chats-img,
 .outgoing-chats-img {
     width: 50px;
@@ -199,8 +199,25 @@ img {
     margin-left: 1rem;
 }
 
+/* Shift user's messages to the right */
+.outgoing-chats {
+    justify-content: flex-end;
+}
+
+.outgoing-chats-msg {
+    order: 2;
+    margin-right: 10px;
+}
+
+.outgoing-chats-img {
+    order: 1;
+    width: 50px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
 .outgoing-chats-msg p {
-    background: linear-gradient(45deg, #ee087f 0%, #DD2A7B 25%, #9858ac 50%, #8134AF 75%, #515BD4 100%);
+    background-image: linear-gradient( 99.9deg, rgba(27,24,31,1) 21.2%, rgba(50,4,89,1) 84.8% );
     color: #fff;
     margin-right: 1rem;
 }
