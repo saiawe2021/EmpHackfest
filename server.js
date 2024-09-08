@@ -69,7 +69,7 @@ async function runOrganize(survey_input) {
     presence_penalty: 0.0,
   });
   surveryresponse = completion.choices[0].message.content;
-  console.log(surveryresponse);
+  // console.log(surveryresponse);
   return surveryresponse;
 }
 
@@ -155,10 +155,10 @@ app.post("/loginhandler", (req, res) => {
   var flag = false;
   console.log(req.body);
   console.log(req.body.passwordField);
-  var sql = "select * from users";
+  var sql = "select * from users where username = ?";
   var user;
 
-  db.get(sql, [], (err, row) => {
+  db.get(sql, [tempUsername], (err, row) => {
       if (err) {
         return console.error(err.message);
       }
@@ -176,6 +176,7 @@ app.post("/loginhandler", (req, res) => {
     var tempUUID = uuidv4();
     db.run("UPDATE users SET UUID = ? WHERE username = ?", [tempUUID, user.username]);
     res.cookie("UUID", tempUUID);
+    res.cookie("username", databaseUser);
     res.redirect("/chatbot");
   } else {
     //res.cookie("UrMom", "HELLO");
@@ -218,16 +219,15 @@ app.post("/survey-answers", (req, res) => {
 
 
 
-app.post("/post/AIcall", (req, res) => {
+app.get("/post/AIcall", (req, res) => {
   console.log("At /post/AIcall");
-  var row = db.get("Select * from AICALLS where username=?",[getCookiesJson().username], (err, row) => {
+  var row = db.get("Select * from AICALLS where username=?",[getCookiesJson(req).username], (err, row) => {
     return row
-    ? (console.log("IM IN AI CALL"), temp())
+    ? (console.log("IM IN AI CALL"), temp(row))
     : console.log(`Nobody found`);
   });
-  function temp() {
-    res.json(row.aiResponse);
-    res.send();
+  function temp(tempRow) {
+    res.json(tempRow.aiResponse);
   }
 });
 
@@ -235,7 +235,6 @@ app.post("/post/ChatBotCall", (req, res)=> {
   const secondFunction = async () => {  
     const result = await chatbotNextMessage(1, req.body);
     res.json(result);
-    res.send();
     return result;
   } 
   secondFunction();
