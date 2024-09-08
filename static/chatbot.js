@@ -121,7 +121,7 @@ if(sendBtn){
         //appends the p element to the div 
         newDiv.appendChild(newElement)
         //gets the div to append to
-        let element = document.getElementById(`outgoingMessageDirectory`)
+        let element = document.getElementById(`messageInbox`)
         //appends the div with the paragraph to the outgoing chat messages div 
         element.appendChild(newDiv)
 
