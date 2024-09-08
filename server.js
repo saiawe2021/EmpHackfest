@@ -235,6 +235,7 @@ app.post("/post/ChatBotCall", (req, res)=> {
   const secondFunction = async () => {  
     const result = await chatbotNextMessage(1, req.body);
     res.json(result);
+    res.send();
     return result;
   } 
   secondFunction();
