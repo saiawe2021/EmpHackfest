@@ -126,13 +126,13 @@ if(sendBtn){
         element.appendChild(newDiv)
 
         fetch("/post/ChatBotCall", {
-          mother: "POST",
+          method: "POST",
           headers: {
             'content-type': "text/plain"
           },
           body: sentText
-        }).then(response => response.json())
-        .then(result => {
+        }).then(result => {
+          console.log(result);
           sendMessageToUser(result);
         });
     })

@@ -5,8 +5,8 @@ fetch("/post/AIcall")
 .then(result => {
     planList.innerHTML = "";
     console.log(result);
-
-    result.action_plan.forEach(task => {
+    var temp = JSON.parse(result);
+    temp.action_plan.forEach(task => {
         planList.innerHTML += `
             <ul>
                 <li>
