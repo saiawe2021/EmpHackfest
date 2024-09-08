@@ -206,6 +206,15 @@ app.post("/post/AIcall", (req, res) => {
   res.json(row.aiResponse);
   res.send();
 });
+
+app.post("/post/ChatBotCall", (req, res)=> {
+  const secondFunction = async () => {  
+    const result = await chatbotNextMessage(1, req.body);
+    res.json(result);
+    return result;
+  } 
+  secondFunction();
+})
 //maybe check for dupes later
 app.post("/post/LoginCred", (req, res)=> {
   var username = req.body.username;
