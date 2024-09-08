@@ -100,7 +100,7 @@ function animate() {
   draw();
   requestAnimationFrame(animate);
 }
-let responses = []; 
+let responses = ["Hello I am your personal Chatbot!"]; 
 //creates an event listener on the send button
 let sendBtn = document.getElementById(`sendButton`);
 

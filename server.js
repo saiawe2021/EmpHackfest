@@ -220,10 +220,15 @@ app.post("/survey-answers", (req, res) => {
 
 app.post("/post/AIcall", (req, res) => {
   console.log("At /post/AIcall");
-  var row = db.get("Select * from AICALLS where username=?",[getCookiesJson().username]);
-
-  res.json(row.aiResponse);
-  res.send();
+  var row = db.get("Select * from AICALLS where username=?",[getCookiesJson().username], (err, row) => {
+    return row
+    ? (console.log("IM IN AI CALL"), temp())
+    : console.log(`Nobody found`);
+  });
+  function temp() {
+    res.json(row.aiResponse);
+    res.send();
+  }
 });
 
 app.post("/post/ChatBotCall", (req, res)=> {
