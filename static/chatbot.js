@@ -13,6 +13,4 @@ document.getElementById(`sendButton`).addEventListener("click", function(){
     newElement.appendChild(node)
     let element = document.getElementById(`outgoing-chats-msg`)
     element.appendChild(newElement)
-
-
 })
