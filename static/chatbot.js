@@ -6,7 +6,7 @@ var points = [],
     radiusVariation = 2, // max variation in radius
     boundaryX = 550,
     boundaryY = 200,
-    numberOfPoints = Math.random() * 40;
+    numberOfPoints = Math.floor(Math.random() * 30) + 10;
 
 init();
 
@@ -35,7 +35,7 @@ function createPoint() {
       vy2;
   point.x = Math.random() * boundaryX;
   point.y = Math.random() * boundaryY;
-  point.radius = baseRadius + Math.random() * radiusVariation; // Set initial radius
+  point.radius = baseRadius + Math.random() * radiusVariation; 
   point.vx = (Math.floor(Math.random()) * 2 - 1) * Math.random();
   vx2 = Math.pow(point.vx, 2);
   vy2 = velocity2 - vx2;
@@ -98,14 +98,14 @@ function animate() {
   draw();
   requestAnimationFrame(animate);
 }
-
-
+let responses = []; 
 //creates an event listener on the send button
 let sendBtn = document.getElementById(`sendButton`)
 if(sendBtn){
     sendBtn.addEventListener("click", function(){
         //gets and resets the sent text
-        let sentText = document.getElementById(`typedText`).value
+        let sentText = document.getElementById(`typedText`).value;
+        responses.push(sentText);
         document.getElementById(`typedText`).value = "";
         //creates a text node using that text
         let node = document.createTextNode(sentText)
