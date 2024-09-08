@@ -1,3 +1,5 @@
+// const { response } = require("express");
+
 var points = [],
     velocity2 = 5, // velocity squared
     canvas = document.getElementById("animation"),
@@ -98,9 +100,10 @@ function animate() {
   draw();
   requestAnimationFrame(animate);
 }
-let responses = []; 
+let responses = ["Hello I am your personal Chatbot!"]; 
 //creates an event listener on the send button
-let sendBtn = document.getElementById(`sendButton`)
+let sendBtn = document.getElementById(`sendButton`);
+
 if(sendBtn){
     sendBtn.addEventListener("click", function(){
         //gets and resets the sent text
@@ -118,9 +121,25 @@ if(sendBtn){
         //appends the p element to the div 
         newDiv.appendChild(newElement)
         //gets the div to append to
-        let element = document.getElementById(`outgoingMessageDirectory`)
+        let element = document.getElementById(`messageInbox`)
         //appends the div with the paragraph to the outgoing chat messages div 
         element.appendChild(newDiv)
+
+        var sendData = {
+          "text": sentText
+        }
+        fetch("/post/ChatBotCall", {
+          method: "POST",
+          headers: {
+            'content-type': "application/json"
+          },
+          body: JSON.stringify(sendData)
+        }).then(response => response.json())
+        .then(result => {
+          console.log(result);
+
+          sendMessageToUser(result.response);
+        });
     })
 }
 
