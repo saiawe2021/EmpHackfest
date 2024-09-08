@@ -10,7 +10,12 @@ body {
     box-sizing: border-box;
     line-height: 1.6;
 }
-
+#animation{
+    background-color: black;
+    background-size: 5px 5px, 5px 5px, 5px 5px, 5px 5px, 5px 5px;
+    background-position: 0 0, 50px 50px, 100px 100px, 150px 150px, 200px 200px;
+    border-radius: 5%;
+}
 /* Chatbot Interface Styling */
 #chatbotInterface {
     background-color: #ffffff;
