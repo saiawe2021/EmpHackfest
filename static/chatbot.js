@@ -33,7 +33,7 @@ if(sendBtn){
         //appends the div with the paragraph to the outgoing chat messages div 
         element.appendChild(newDiv)
     })
-
+}
 
 function sendMessageToUser(textToSend){
     //gets the div to append divs to  
