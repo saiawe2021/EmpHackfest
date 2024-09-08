@@ -8,7 +8,7 @@ document.getElementById("signUpButton").addEventListener("submit", function(){
 })
 username = document.getElementById('userNameField'),
 password = document.getElementById('passwordField');
-
+/*
 document.getElementById("loginButton").addEventListener("click", () => {
     var userCredentials = {
         "username": username.value,
@@ -25,3 +25,4 @@ document.getElementById("loginButton").addEventListener("click", () => {
     //window.href("/loginHandler");
 }
 )
+*/
