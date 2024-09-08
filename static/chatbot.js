@@ -1,5 +1,10 @@
-<<<<<<< HEAD
-//creates an event listener on the 
+let planList = document.getElementById("planList");
+let answer;
+fetch("/post/AIcall")
+.then(response=>response.json())
+.then(result => console.log(result));
+
+//creates an event listener on the send button
 document.getElementById(`sendButton`).addEventListener("click", function(){
     let sentText = document.getElementById(`typedText`).textContent
     document.getElementById(`typedText`).textContent = "";
@@ -11,10 +16,3 @@ document.getElementById(`sendButton`).addEventListener("click", function(){
 
 
 })
-=======
-let planList = document.getElementById("planList");
-let answer;
-fetch("/post/AIcall")
-.then(response=>response.json())
-.then(result => console.log(result));
->>>>>>> df050d5180aabb3548261a7f8252e0e7a890db27
