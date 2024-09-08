@@ -1,10 +1,10 @@
-/* REMOVED FOR DEMO PURPOSES
+
 let planList = document.getElementById("planList");
 let answer;
 fetch("/post/AIcall")
 .then(response=>response.json())
 .then(result => console.log(result));
-*/
+
 
 //creates an event listener on the send button
 let sendBtn = document.getElementById(`sendButton`)
