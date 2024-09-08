@@ -9,17 +9,21 @@
 </head>
 <body>
     <div class="container">
+        <form action="/loginhandler" method="post">
         <h1>Login</h1>
         <div class="form-group">
             <label for="userNameField">Username</label>
             <input type="text" id="userNameField" placeholder="Enter your username">
         </div>
         <div class="form-group">
-            <label for="passwordField">Password</label>
-            <input type="password" id="passwordField" placeholder="Enter your password">
+            <label for="passwordField" >Password</label>
+            <input type="password" name="passwordField" id="passwordField" placeholder="Enter your password">
         </div>
         <div class="form-actions">
-            <button id="loginButton"><a href="chatbot.html">Login</a></button>
+            <input type="submit"/>
+        </form>
+            <button id="loginButton"><a href="/login">Login</a></button>
+            </div>
             <a href="signUp.html" id="signUpButton">Dont have a account Sign Up</a>
         </div>
     </div>

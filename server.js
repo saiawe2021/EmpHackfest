@@ -3,22 +3,51 @@ const path = require('path');
 const app = express();
 var bodyParser = require('body-parser')
 let jsonParser = bodyParser.json()
-
+const { v4: uuidv4 } = require('uuid');
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('./database/test.db');
 const OpenAI = require("openai");
+const { is } = require('express/lib/request');
 const openai = new OpenAI({
   apiKey: ""
 });
 
-var survey_input = {
-  "homeCountry" : "",
-  "fitness" : "",
-  "personality" : "",
-  "education" : "",
-  "work_experience" : "",
-  "adaptation" : ""
-}
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.json());
 
 var user_chatbot_summaries = {}
+
+
+function isUserLoggedIn(req) {
+  var currCookies = getCookiesJson(req);
+  if(!currCookies || !currCookies.UUID) return false;
+  var UUID = currCookies.UUID;
+  var dbResult = db.get("SELECT * FROM users WHERE UUID=?",[UUID]);
+  if(!dbResult) return false;
+  return true;
+}
+
+function getcookie(req) {
+  var cookie = req.headers.cookie;
+  if(!cookie) return cookie;
+  // user=someone; session=mySessionID
+  return cookie.split('; ');
+}
+
+function getCookiesJson(req) {
+ 
+  var temp = getcookie(req);
+  if(!temp) return temp;
+  var tempMap = new Map();
+  for(var i = 0; i < temp.length; i++) {
+    tempMap.set(temp[i].
+      split("=")[0], temp[i]
+      .split("=")[1]);
+  }
+  return Object.fromEntries(tempMap);
+}
+
 
 async function runOrganize(survey_input) {
   // For text-and-image input (multimodal), use the gemini-pro-vision model
@@ -85,6 +114,8 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, 'Static', 'Homepage.html'));
 });
 
+
+
 app.get("/signUp", (req, res) => {
   res.sendFile(path.join(__dirname, 'Static', 'signUp.html'));
 });
@@ -93,36 +124,95 @@ app.get("/chatBot", (req, res) => {
   res.sendFile(path.join(__dirname, 'Static', 'chatbot.html'));
 });
 
+app.get("/login", (req, res) => {
+  if(isUserLoggedIn(req)) {
+    res.redirect("/chatbot");
+  } else {
+    res.sendFile(path.join(__dirname, 'Static', 'login.html'));
+  }
+
+});
+
+app.get("/survey", (req, res) => {
+  if(!getCookiesJson(req).username) {
+    redirect("/login");
+  } else {
+    res.sendFile(path.join(__dirname, 'Static', 'survey.html'));
+  }
+});
 app.use(express.json());
+app.post("/loginhandler", (req, res) => {
+  var cookies = getCookiesJson(req);
+
+  console.log(cookies);
+  console.log("WE ARE HERE BB");
+  console.log(req.body.usernameField);
+  console.log(req.body);
+  console.log(req.body.passwordField);
+  var user = db.get("SELECT * FROM users where username=?", req.body.username);
+  console.log(user);
+
+  console.log();
+  console.log(user.password);
+  console.log(req.body.passwordField);
+  if(user && user.password == req.body.passwordField) {
+    console.log("One");
+    var tempUUID = uuidv4();
+    db.run("UPDATE users SET UUID = ? WHERE username = ?", [tempUUID, user.username]);
+    res.cookie("UUID", tempUUID);
+    res.redirect("/chatbot");
+  } else {
+    //res.cookie("UrMom", "HELLO");
+    res.redirect("/");
+    console.log("Two");
+    
+  }
+
+});
+
+
 app.post("/survey-answers", (req, res) => {
+  var survey_input = {
+    "homeCountry" : "",
+    "fitness" : "",
+    "personality" : "",
+    "education" : "",
+    "work_experience" : "",
+    "adaptation" : ""
+  }
+  console.log("At /survey-answers");
   survey_input.homeCountry = req.body.homeCountry;
   survey_input.fitness = req.body.fitness;
   survey_input.personality = req.body.personality;
   survey_input.education = req.body.education;
   survey_input.work_experience = req.body.fitness;
   survey_input.adaptation = req.body.adaptation;
+  
+  var username = getCookiesJson(req).username;
+  const secondFunction = async () => {  
+    const result = await runOrganize(survey_input);
+    db.run("insert into AICALLS(username, aiResponse) VALUES(?, ?)", [username, result]);
+  }
+  secondFunction();
   console.log(survey_input);
 })
 
 
 
 app.post("/post/AIcall", (req, res) => {
-  const secondFunction = async () => {  
-    const result = await runOrganize(survey_input);
-    res.json(result);
-    res.send();
-    console.log(result);
-    return result;
-  } 
-  secondFunction();
-});
+  console.log("At /post/AIcall");
+  var row = db.get("Select * from AICALLS where username=?",[getCookiesJson().username]);
 
-var username;
-var password;
-app.use(express.json());
+  res.json(row.aiResponse);
+  res.send();
+});
+//maybe check for dupes later
 app.post("/post/LoginCred", (req, res)=> {
-  username = req.body.username;
-  password = req.body.password;
+  var username = req.body.username;
+  var password = req.body.password;
+  db.run('insert into users(username, password) VALUES(?, ?)',[username, password]);
+  res.cookie("username", username);
+  res.redirect("/survey");
   console.log(username + " " +  password);
 })
 
