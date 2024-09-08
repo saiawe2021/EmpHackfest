@@ -105,7 +105,7 @@ async function chatbotNextMessage(uuid, last_input) {
   console.log(surveryresponse);
   user_chatbot_summaries[uuid] = JSON.parse(surveryresponse)["summary"];
   console.log(user_chatbot_summaries);
-  return surveryresponse;
+  return JSON.parse(surveryresponse)["response"];
 }
 
 app.use(express.static(path.join(__dirname, 'Static')));
