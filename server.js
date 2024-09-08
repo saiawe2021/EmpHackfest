@@ -24,7 +24,7 @@ function isUserLoggedIn(req) {
   if(!currCookies || !currCookies.UUID) return false;
   var UUID = currCookies.UUID;
   var dbResult = db.get("SELECT * FROM users WHERE UUID=?",[UUID]);
-  if(!dbResult) return false;
+  if(!dbResult.username) return false;
   return true;
 }
 
@@ -38,7 +38,7 @@ function getcookie(req) {
 function getCookiesJson(req) {
  
   var temp = getcookie(req);
-  if(!temp) return temp;
+  if(!temp) return {};
   var tempMap = new Map();
   for(var i = 0; i < temp.length; i++) {
     tempMap.set(temp[i].
@@ -125,6 +125,7 @@ app.get("/chatBot", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
+  console.log("At /login");
   if(isUserLoggedIn(req)) {
     res.redirect("/chatbot");
   } else {
@@ -134,28 +135,43 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/survey", (req, res) => {
+  console.log("At /survey");
   if(!getCookiesJson(req).username) {
-    redirect("/login");
+    res.redirect("/login");
   } else {
     res.sendFile(path.join(__dirname, 'Static', 'survey.html'));
   }
 });
-app.use(express.json());
 app.post("/loginhandler", (req, res) => {
   var cookies = getCookiesJson(req);
 
   console.log(cookies);
   console.log("WE ARE HERE BB");
-  console.log(req.body.usernameField);
+  console.log(req.body.userNameField);
+  var tempUsername = req.body.userNameField;
+  var tempPassword = req.body.passwordField;
+  var databaseUser;
+  var databasePass;
+  var flag = false;
   console.log(req.body);
   console.log(req.body.passwordField);
-  var user = db.get("SELECT * FROM users where username=?", req.body.username);
-  console.log(user);
+  var sql = "select * from users";
+  var user;
 
-  console.log();
-  console.log(user.password);
-  console.log(req.body.passwordField);
-  if(user && user.password == req.body.passwordField) {
+  db.get(sql, [], (err, row) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      return row
+        ? (console.log("IM HERE"),user = row,flag = true, databaseUser = row.username, databasePass = row.password, temp())
+        : console.log(`Nobody found`);
+  });
+  function temp() {
+    console.log(user);
+  console.log(databasePass);
+  console.log(databaseUser);
+  console.log(flag);
+  if(flag && req.body.passwordField == tempPassword) {
     console.log("One");
     var tempUUID = uuidv4();
     db.run("UPDATE users SET UUID = ? WHERE username = ?", [tempUUID, user.username]);
@@ -167,6 +183,9 @@ app.post("/loginhandler", (req, res) => {
     console.log("Two");
     
   }
+  }
+  
+  
 
 });
 
@@ -208,12 +227,16 @@ app.post("/post/AIcall", (req, res) => {
 });
 //maybe check for dupes later
 app.post("/post/LoginCred", (req, res)=> {
-  var username = req.body.username;
-  var password = req.body.password;
+  console.log("At /post/LoginCred");
+
+  var username = req.body.userNameField;
+  var password = req.body.passwordField;
+  
+  console.log(username + " " +  password);
   db.run('insert into users(username, password) VALUES(?, ?)',[username, password]);
   res.cookie("username", username);
+
   res.redirect("/survey");
-  console.log(username + " " +  password);
 })
 
 
