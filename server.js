@@ -105,7 +105,7 @@ async function chatbotNextMessage(uuid, last_input) {
   console.log(surveryresponse);
   user_chatbot_summaries[uuid] = JSON.parse(surveryresponse)["summary"];
   console.log(user_chatbot_summaries);
-  return surveryresponse;
+  return JSON.parse(surveryresponse)["response"];
 }
 
 app.use(express.static(path.join(__dirname, 'Static')));
@@ -220,10 +220,15 @@ app.post("/survey-answers", (req, res) => {
 
 app.post("/post/AIcall", (req, res) => {
   console.log("At /post/AIcall");
-  var row = db.get("Select * from AICALLS where username=?",[getCookiesJson().username]);
-
-  res.json(row.aiResponse);
-  res.send();
+  var row = db.get("Select * from AICALLS where username=?",[getCookiesJson().username], (err, row) => {
+    return row
+    ? (console.log("IM IN AI CALL"), temp())
+    : console.log(`Nobody found`);
+  });
+  function temp() {
+    res.json(row.aiResponse);
+    res.send();
+  }
 });
 
 app.post("/post/ChatBotCall", (req, res)=> {
